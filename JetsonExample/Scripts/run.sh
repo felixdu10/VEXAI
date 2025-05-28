@@ -16,7 +16,7 @@ PYTHON_PROGRAM="$PYTHON_DIR/highstakes.py"
 # Set the required environment variables
 export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-export PYTHONPATH=$PYTHONPATH:/usr/local/OFF
+export PYTHONPATH=$PYTHONPATH:/usr/local/lib/python3.6
 
 # Run the Python program
 /usr/bin/python3 $PYTHON_PROGRAM
