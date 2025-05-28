@@ -14,16 +14,22 @@
 using namespace vex;
 
 brain Brain;
-// Robot configuration code.
-motor leftDrive = motor(PORT1, ratio18_1, false);
-motor rightDrive = motor(PORT2, ratio18_1, true);
-gps GPS = gps(PORT12, -127, -165, distanceUnits::mm, 180);
+
+// Drive motors
+motor rightDrive = motor(PORT1, ratio18_1, true);   // Right motor (reversed)
+motor leftDrive  = motor(PORT6, ratio18_1, false);  // Left motor
+
+// GPS Sensor
+gps GPS = gps(PORT18, -127, -165, distanceUnits::mm, 180);
+
+// Smart drive setup
 smartdrive Drivetrain = smartdrive(leftDrive, rightDrive, GPS, 319.19, 320, 40, mm, 1);
-// Controls arm used for raising and lowering rings
-motor Arm = motor(PORT3, ratio18_1, false);
-// Controls the chain at the front of the arm
-// used for pushing rings off of the arm
-motor Chain = motor(PORT8, ratio18_1, false);
+
+
+// Intake system
+motor Intake1 = motor(PORT8, ratio18_1, false);
+motor Intake2 = motor(PORT15, ratio18_1, false);
+
 
 
 // A global instance of competition
@@ -42,7 +48,7 @@ ai::jetson  jetson_comms;
 // The Demo is symetrical, we send the same data and display the same status on both
 // manager and worker robots
 // Comment out the following definition to build for the worker robot
-// #define  MANAGER_ROBOT    1
+ #define  MANAGER_ROBOT    1
 
 #if defined(MANAGER_ROBOT)
 #pragma message("building for the manager")
@@ -68,14 +74,7 @@ void auto_Isolation(void) {
   // Optional wait to allow for calibration
   waitUntil(!(GPS.isCalibrating()));
 
-  // Set brake mode for the arm
-  Arm.setStopping(brakeType::hold);
-  // Reset the position of the arm while its still on the ground
-  Arm.resetPosition();
-  // Lift the arm to prevent dragging
-  Arm.spinTo(75, rotationUnits::deg);
-
-  // Finds and moves robot to over the closest blue ring
+=  // Finds and moves robot to over the closest blue ring
   goToObject(OBJECT::BlueRing);
   grabRing();
   // Find and moves robot to the closest mobile drop
