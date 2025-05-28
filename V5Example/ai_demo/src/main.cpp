@@ -69,6 +69,9 @@ ai::robot_link       link( PORT10, "robot_32456_1", linkType::worker );
 /*---------------------------------------------------------------------------*/
 
 void auto_Isolation(void) {
+
+  Drivetrain.driveFor(50, distanceUnits::cm);
+
   // Calibrate GPS Sensor
   GPS.calibrate();
   // Optional wait to allow for calibration
