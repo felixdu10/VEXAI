@@ -68,12 +68,7 @@ void auto_Isolation(void) {
   // Optional wait to allow for calibration
   waitUntil(!(GPS.isCalibrating()));
 
-  // Set brake mode for the arm
-  Arm.setStopping(brakeType::hold);
-  // Reset the position of the arm while its still on the ground
-  Arm.resetPosition();
-  // Lift the arm to prevent dragging
-  Arm.spinTo(75, rotationUnits::deg);
+
 
   // Finds and moves robot to over the closest blue ring
   goToObject(OBJECT::BlueRing);
@@ -148,6 +143,10 @@ void autonomousMain(void) {
 
 
 int main() {
+
+
+  auto_Isolation();
+
   // local storage for latest data from the Jetson Nano
   static AI_RECORD local_map;
 
@@ -172,7 +171,6 @@ int main() {
   Brain.Screen.newLine(); Brain.Screen.print("Entering main loop...");
 
 
-  auto_Isolation();
 
 
   while(1) {
