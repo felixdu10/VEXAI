@@ -142,63 +142,73 @@ void autonomousMain(void) {
   
 
 
+
 int main() {
+  leftDrive.spin(forward, 50, percent);
+  rightDrive.spin(forward, 50, percent);
+  wait(3, seconds);
+  leftDrive.stop();
+  rightDrive.stop();
+}
 
 
-  auto_Isolation();
-
-  // local storage for latest data from the Jetson Nano
-  static AI_RECORD local_map;
-
-  // Run at about 15Hz
-  int32_t loop_time = 33;
-
-  // Setup debug screen
-  Brain.Screen.clearScreen();
-  Brain.Screen.setCursor(1, 1);
-  Brain.Screen.print("Starting main()...");
-
-  // Start the status update display (Jetson + VEXlink dashboard)
-  Brain.Screen.newLine(); Brain.Screen.print("Starting dashboard...");
-  thread t1(dashboardTask);
-
-  // Setup autonomous callback
-  Brain.Screen.newLine(); Brain.Screen.print("Setting up Competition mode...");
-  Competition.autonomous(autonomousMain);
-
-  this_thread::sleep_for(loop_time);
-  Arm.setVelocity(60, percent);
-  Brain.Screen.newLine(); Brain.Screen.print("Entering main loop...");
+// int main() {
 
 
+//   auto_Isolation();
+
+//   // local storage for latest data from the Jetson Nano
+//   static AI_RECORD local_map;
+
+//   // Run at about 15Hz
+//   int32_t loop_time = 33;
+
+//   // Setup debug screen
+//   Brain.Screen.clearScreen();
+//   Brain.Screen.setCursor(1, 1);
+//   Brain.Screen.print("Starting main()...");
+
+//   // Start the status update display (Jetson + VEXlink dashboard)
+//   Brain.Screen.newLine(); Brain.Screen.print("Starting dashboard...");
+//   thread t1(dashboardTask);
+
+//   // Setup autonomous callback
+//   Brain.Screen.newLine(); Brain.Screen.print("Setting up Competition mode...");
+//   Competition.autonomous(autonomousMain);
+
+//   this_thread::sleep_for(loop_time);
+//   Arm.setVelocity(60, percent);
+//   Brain.Screen.newLine(); Brain.Screen.print("Entering main loop...");
 
 
-  while(1) {
-    // Get last map data from Jetson
-    jetson_comms.get_data(&local_map);
 
-    // Print detection count
-    Brain.Screen.setCursor(7, 1);  // Fixed position to overwrite same line
-    Brain.Screen.print("Detections: %d     ", local_map.detectionCount);
 
-    // Print first detected object info if available
-    if (local_map.detectionCount > 0) {
-      DETECTION_OBJECT &obj = local_map.detections[0];
-      Brain.Screen.setCursor(8, 1);
-      Brain.Screen.print("ClassID: %d Prob: %.2f", obj.classID, obj.probability);
-    }
+//   while(1) {
+//     // Get last map data from Jetson
+//     jetson_comms.get_data(&local_map);
 
-    // Set location to send to partner robot
-    link.set_remote_location(local_map.pos.x, local_map.pos.y, local_map.pos.az, local_map.pos.status);
+//     // Print detection count
+//     Brain.Screen.setCursor(7, 1);  // Fixed position to overwrite same line
+//     Brain.Screen.print("Detections: %d     ", local_map.detectionCount);
 
-    // Request new map data
-    jetson_comms.request_map();
+//     // Print first detected object info if available
+//     if (local_map.detectionCount > 0) {
+//       DETECTION_OBJECT &obj = local_map.detections[0];
+//       Brain.Screen.setCursor(8, 1);
+//       Brain.Screen.print("ClassID: %d Prob: %.2f", obj.classID, obj.probability);
+//     }
 
-    // Wait for next loop
-    this_thread::sleep_for(loop_time);
-  }
+//     // Set location to send to partner robot
+//     link.set_remote_location(local_map.pos.x, local_map.pos.y, local_map.pos.az, local_map.pos.status);
+
+//     // Request new map data
+//     jetson_comms.request_map();
+
+//     // Wait for next loop
+//     this_thread::sleep_for(loop_time);
+//   }
 
   
-  // TEMPORARY: force autonomous run //debug only
-  // auto_Isolation(); 
-}
+//   // TEMPORARY: force autonomous run //debug only
+//   // auto_Isolation(); 
+// }
