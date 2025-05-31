@@ -46,10 +46,10 @@ ai::jetson  jetson_comms;
 
 #if defined(MANAGER_ROBOT)
 #pragma message("building for the manager")
-ai::robot_link       link( PORT10, "robot_32456_1", linkType::manager );
+ai::robot_link       link( PORT21, "robot_32456_1", linkType::manager );
 #else
 #pragma message("building for the worker")
-ai::robot_link       link( PORT10, "robot_32456_1", linkType::worker );
+ai::robot_link       link( PORT21, "robot_32456_1", linkType::worker );
 #endif
 
 /*---------------------------------------------------------------------------*/
